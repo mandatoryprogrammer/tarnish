@@ -1,12 +1,19 @@
 # tarnish
 
-`tarnish` is a static-analysis tool to aid researchers in security reviews of Chrome extensions. It automates much of the regular grunt work and helps you quickly identify potential security vulnerabilities. This tool accompanies the research blog post which can be found [here](https://thehackerblog.com/kicking-the-rims-a-guide-for-securely-writing-and-auditing-chrome-extensions/index.html).
+`tarnish` is a static-analysis tool to aid researchers in security reviews of Chrome extensions. It automates much of the regular grunt work and helps you quickly identify potential security vulnerabilities. This tool accompanies the research blog post which can be found [here](https://thehackerblog.com/kicking-the-rims-a-guide-for-securely-writing-and-auditing-chrome-extensions/index.html). If you don't want to go through the trouble of setting this up you can just use the tool at [`https://thehackerblog.com/tarnish/`](https://thehackerblog.com/tarnish/).
 
 ![](screenshot.png)
 
 ## Unpolished Notice & Notes
 
 It should be noted that this is an un-polished release. This is the same source as the deployment located at [`https://thehackerblog.com/tarnish/`](https://thehackerblog.com/tarnish/).
+
+To set this up you'll need to understand how to:
+
+* Configure an S3 bucket
+* (if using auto-scaling) Set up ElasticBeanstalk
+* Use `docker-compose`
+* Set up redis
 
 The set up is a little complex due to a few design goals:
 
