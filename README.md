@@ -6,7 +6,7 @@
 
 ## Unpolished Notice & Notes
 
-It should be noted that this is an un-polished release. This is the same source as the deployment located at [`https://thehackerblog.com/tarnish/`](https://thehackerblog.com/tarnish/).
+It should be noted that this is an un-polished release. This is the same source as the deployment located at [`https://thehackerblog.com/tarnish/`](https://thehackerblog.com/tarnish/). In the future I may clean this up and make it much easier to run but I don't have time right now.
 
 To set this up you'll need to understand how to:
 
