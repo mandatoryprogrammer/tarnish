@@ -29,7 +29,7 @@ Pulls any Chrome extension from a provided Chrome webstore link.
 
 * `manifest.json` viewer: simply displays a JSON-prettified version of the extension’s manifest.
 * Fingerprint Analysis: Detection of `web_accessible_resources` and automatic generation of Chrome extension fingerprinting JavaScript.
-* Potential Clickjacking Analysis: Detection of extension HTML pages with the web_accessible_resources directive set. These are potentially vulnerable to clickjacking depending on the purpose of the pages.
+* Potential Clickjacking Analysis: Detection of extension HTML pages with the `web_accessible_resources` directive set. These are potentially vulnerable to clickjacking depending on the purpose of the pages.
 * Permission Warning(s) viewer: which shows a list of all the Chrome permission prompt warnings which will be displayed upon a user attempting to install the extension.
 * Dangerous Function(s): shows the location of dangerous functions which could potentially be exploited by an attacker (e.g. functions such as innerHTML, chrome.tabs.executeScript).
 * Entry Point(s): shows where the extension takes in user/external input. This is useful for understanding an extension’s surface area and looking for potential points to send maliciously-crafted data to the extension.
