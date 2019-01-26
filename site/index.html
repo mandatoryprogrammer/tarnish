@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>tarnish - Chrome Extension Analyzer</title>
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/codemirror.css" rel="stylesheet">
+    <link href="css/app.css" rel="stylesheet">
+    <link href="css/highlightjs-styles/default.css" rel="stylesheet">
+    <base href="https://thehackerblog.com/tarnish/" />
+  </head>
+  <body>
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0 tarnish-logo" href="/tarnish/"><span data-feather="aperture"></span> tarnish</a>
+      <input class="chrome-extension-input form-control form-control-dark w-100" type="text" placeholder="https://chrome.google.com/webstore/detail/example-extension-name/kbfnbca...">
+      <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+          <a class="start-scan-button nav-link" href="#">Analyze Chrome Extension <span data-feather="chevron-right"></span></a>
+        </li>
+      </ul>
+    </nav>
+    <div id="main" class="container-fluid">
+      <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+          <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+              <li class="nav-item extension-name-nav">
+                <div style="text-align: center" v-if="extension_loaded">
+                  <img v-bind:src="report_data.metadata.image"/>
+                  <br />
+                  <p style="display: inline">
+                    <i>{{report_data.metadata.name}}</i>
+                    <br />
+                  <pre>Version {{report_data.metadata.version}}</pre>
+                </p>
+              </div>
+            </li>
+          </ul>
+          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>Extension Info</span>
+          </h6>
+          <ul class="nav flex-column mb-2" v-if="extension_loaded">
+            <li class="nav-item fingerprintable-nav">
+              <a class="nav-link">
+                <span data-feather="info"></span>
+                <p style="display: inline;" v-if="report_data.fingerprintable">Fingerprintable: <span class="badge badge-pill badge-success">Yes</span></p>
+                <p style="display: inline;" v-if="!report_data.fingerprintable">Fingerprintable: <span class="badge badge-pill badge-secondary">No</span></p>
+              </a>
+            </li>
+          </ul>
+          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" style="margin-top: 1px !important">
+          <span>Chrome Extension Tools</span>
+          </h6>
+          <ul class="nav flex-column mb-2" v-if="extension_loaded">
+            <li class="nav-item manifest-viewer-link-nav">
+              <a class="nav-link" href="#">
+                <span data-feather="code"></span>
+                <code>manifest.json</code> Viewer
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link permissions-nav" href="#">
+                <span data-feather="align-left"></span>
+                Permission Warning(s) <span class="badge badge-pill badge-primary">{{report_data.permissions_info.length}}</span>
+              </a>
+            </li>
+            <li class="nav-item fingerprintable-resources-nav" v-if="report_data.fingerprintable">
+              <a class="nav-link" href="#">
+                <span data-feather="target"></span>
+                Fingerprintable Resource(s) <span class="badge badge-pill badge-primary">{{report_data.web_accessible_resources_paths.length}}</span>
+              </a>
+            </li>
+            <li class="nav-item potential-clickjacking-nav" v-if="report_data.web_accessible_html.length > 0">
+              <a class="nav-link" href="#">
+                <span data-feather="eye-off"></span>
+                Clickjackable Page(s) <span class="badge badge-pill badge-primary">{{report_data.web_accessible_html.length}}</span>
+              </a>
+            </li>
+            <li class="nav-item dangerous-functions-nav">
+              <a class="nav-link" href="#">
+                <span data-feather="alert-octagon"></span>
+                Dangerous Function(s) <span class="badge badge-pill badge-primary">{{report_data.risky_javascript_functions.length}}</span>
+              </a>
+            </li>
+            <li class="nav-item entry-points-nav">
+              <a class="nav-link" href="#">
+                <span data-feather="log-in"></span>
+                Entry Point(s) <span class="badge badge-pill badge-primary">{{report_data.web_entrypoints.length}}</span>
+              </a>
+            </li>
+            <li class="nav-item csp-nav">
+              <a class="nav-link" href="#">
+                <span data-feather="shield"></span>
+                Content Security Policy <span class="badge badge-pill badge-primary">{{report_data.csp_report.length}}</span>
+              </a>
+            </li>
+            <li class="nav-item known-vulnerable-libraries-nav">
+              <a class="nav-link" href="#">
+                <span data-feather="list"></span>
+                Known Vulnerable Libraries <span class="badge badge-pill badge-primary">{{Object.keys(report_data.retirejs).length}}</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" v-bind:href="report_data.s3_extension_download_link" download>
+                <span data-feather="download"></span>
+                Download Extension
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" v-bind:href="report_data.s3_beautified_extension_download_link" download>
+                <span data-feather="download"></span>
+                Download Beautified Extension
+              </a>
+            </li>
+            <!--
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" v-bind:href="report_data.s3_autodoc_extension_download_link" download>
+                <span data-feather="download"></span>
+                Download AutoDoc-ed Extension
+              </a>
+            </li>
+            -->
+          </ul>
+          <hr />
+          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>Created By</span>
+          </h6>
+          <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+              <a target="_blank" class="nav-link" href="https://thehackerblog.com">
+                <span data-feather="user"></span>
+                Matthew Bryant
+              </a>
+            </li>
+            <li class="nav-item">
+              <a target="_blank" class="nav-link">
+                <span data-feather="mail"></span>
+                <code>mandatory<span data-feather="at-sign">downwithbots</span>gmail.com</code>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a target="_blank" class="nav-link" href="https://twitter.com/IAmMandatory">
+                <span data-feather="twitter"></span>
+                <code>@IAmMandatory</code>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a target="_blank" class="nav-link" href="https://github.com/mandatoryprogrammer">
+                <span data-feather="github"></span>
+                <code>mandatoryprogrammer</code>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a target="_blank" class="nav-link" href="https://www.linkedin.com/in/matthew-bryant-a9403289/">
+                <span data-feather="linkedin"></span>
+                <code>LinkedIn</code>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+        <div v-if="menu == 'unstarted'" class="unstarted-dashboard">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+            <h1 class="h2"> <span style="width: 25px; height: 25px" data-feather="arrow-up-circle"></span> Please submit an extension above to begin</h1>
+          </div>
+          <center style="margin-top: 10%">
+          <font style="font-size: 64px">tarnish</font>
+          <p style="font-size: 24px">The Chrome Extension Analyzer</p>
+          </center>
+        </div>
+        <div v-if="menu == 'analyzing-extension-load-screen'" class="analyzing-extension-load-screen-dashboard">
+          <center style="margin-top: 10%">
+          <font style="font-size: 64px">Analyzing extension...</font>
+          <p style="font-size: 24px">Your extension is in the queue to be analyzed, please wait...<br />(this may take a few minutes, grab a coffee for big extensions)</p>
+          <img src="img/loading.gif" style="margin: 0px;" />
+          </center>
+          </div> <!-- END OF analyzing-extension-load-screen -->
+        <div v-if="menu == 'pulling-zip-load-screen'" class="pulling-zip-load-screen-dashboard">
+          <center style="margin-top: 10%">
+          <font style="font-size: 64px">Pushing results to your browser...</font>
+          <p style="font-size: 24px">Your extension has been analyzed! Results are now being pushed to your browser.<br />(this may take a few seconds depending on your connection speed)</p>
+          <img src="img/loading.gif" style="margin: 0px;" />
+          </center>
+          </div> <!-- END OF analyzing-extension-load-screen -->
+          <div v-if="menu == 'known-vulnerable-libraries'" class="known-vulnerable-libraries-dashboard">
+            <h1>Known Vulnerable Libraries (<a href="https://retirejs.github.io/retire.js/" target="_blank">
+            <pre style="display: inline">retire.js</pre>
+            </a>)
+            </h1>
+            <div v-for="vulnerability in report_data.retirejs">
+              <div class="card border-secondary mb-3">
+                <div class="card-header">{{vulnerability.definition_name}} {{vulnerability.version}} Vulnerable Library</div>
+                <div class="card-body">
+                  <h4 class="card-title">{{vulnerability.definition_name}} {{vulnerability.version}}</h4>
+                  <p class="card-text">
+                    <b>Location</b>: <code>/{{vulnerability.file_path}}</code><br />
+                    <b>URI</b>: <code>chrome-extension://{{extension_id}}/{{vulnerability.file_path}}</code><br />
+                    <span v-if="vulnerability.vulnerability.severity.toLowerCase() == 'high'">
+                      <b>Risk Rating: </b> <span class="badge badge-danger">High</span>
+                    </span>
+                    <span v-if="vulnerability.vulnerability.severity.toLowerCase() == 'medium'">
+                      <b>Risk Rating: </b> <span class="badge badge-warning">Medium</span>
+                    </span>
+                    <span v-if="vulnerability.vulnerability.severity.toLowerCase() == 'low'">
+                      <b>Risk Rating: </b> <span class="badge badge-secondary">Low</span>
+                    </span>
+                    <br />
+                    <span v-if="'identifiers' in vulnerability.vulnerability && 'summary' in vulnerability.vulnerability.identifiers"><b>Summary: </b>{{vulnerability.vulnerability.identifiers.summary}}</span>
+                    <!-- CVE(s) -->
+                    <p v-if="'identifiers' in vulnerability.vulnerability && 'CVE' in vulnerability.vulnerability.identifiers && vulnerability.vulnerability.identifiers.CVE">
+                      <b>CVE(s): </b>
+                      <ul>
+                        <li v-for="cve in vulnerability.vulnerability.identifiers.CVE">
+                          <a v-bind:href="'https://cve.mitre.org/cgi-bin/cvename.cgi?name=' + cve" target="_blank"><code>{{cve}}</code></a>
+                        </li>
+                      </ul>
+                    </p>
+                    <!-- osvdb(s) -->
+                    <p v-if="'identifiers' in vulnerability.vulnerability && 'osvdb' in vulnerability.vulnerability.identifiers && vulnerability.vulnerability.identifiers.osvdb">
+                      <b>OSVDB ID(s): </b>
+                      <ul>
+                        <li v-for="osvdb in vulnerability.vulnerability.identifiers.osvdb">
+                          <code>{{osvdb}}</code>
+                        </li>
+                      </ul>
+                    </p>
+                    <!-- More info link(s) -->
+                    <p v-if="'info' in vulnerability.vulnerability">
+                      <b>Further Information: </b>
+                      <ul>
+                        <li v-for="info_link in vulnerability.vulnerability.info">
+                          <a v-bind:href="info_link" target="_blank"><code>{{info_link}}</code></a>
+                        </li>
+                      </ul>
+                    </p>
+                  </p>
+                </div>
+              </div>
+            </div>
+            </div> <!-- END OF known-vulnerable-libraries -->
+            <div v-if="menu == 'permissions'" class="permissions-dashboard">
+              <h1>Extension Permission Warning(s)</h1>
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th style="min-width: 200px" scope="col">Permission</th>
+                    <th scope="col">Install Warning Text</th>
+                    <th scope="col">Note(s)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="permission in report_data.permissions_info">
+                    <td style="text-align: center"><code>{{permission.permission}}</code></td>
+                    <td><pre>{{permission.warning_text}}</pre></td>
+                    <td v-html="permission.notes"></td>
+                  </tr>
+                </tbody>
+              </table>
+              </div> <!-- END OF permissions -->
+              <div v-if="menu == 'manifest'" class="manifest-dashboard">
+                <h1><code>manifest.json</code></h1>
+                <div class="card border-secondary mb-3">
+                  <div class="card-header"><b>Policy Contents</b></div>
+                <pre style="margin-bottom: 0px" v-highlightjs="report_data.manifest_text"><code style="padding: 20px;" class="json">{{report_data.manifest_text}}</code></pre>
+              </div>
+              </div> <!-- END OF manifest -->
+              <div v-if="menu == 'entry-points'" class="entry-points-dashboard">
+                <h1>Entry Point(s)</h1>
+                <div class="card border-secondary mb-3">
+                  <div class="card-header"><b>Filters</b></div>
+                  <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center" v-for="visible_entity_name in static_web_entrypoints">
+                      <span>
+                        <code>{{visible_entity_name}}</code>
+                      </span>
+                      <span>
+                        <button style="margin-left: 10px" v-on:click="hide_visible" filterclass="web_entrypoints" v-bind:name="visible_entity_name" type="button" class="btn btn-sm btn-danger" v-if="visible_web_entrypoints.includes(visible_entity_name)">Hide</button>
+                        <button style="margin-left: 10px" v-on:click="show_visible" filterclass="web_entrypoints" v-bind:name="visible_entity_name" type="button" class="btn btn-sm btn-primary" v-if="!visible_web_entrypoints.includes(visible_entity_name)">Show</button>
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="card border-secondary mb-3" v-for="entrypoint in report_data.web_entrypoints" v-if="visible_web_entrypoints.includes(entrypoint.indicator.name)">
+                  <div class="card-header"><b>{{entrypoint.indicator.name}}</b></div>
+                  <div class="card-body">
+                    <p class="card-text"><b>Description</b>: <p style="display: inline" v-html="entrypoint.indicator.description"></p></p>
+                  <pre v-highlightjs="entrypoint.context_block"><code class="javascript">{{entrypoint.context_block}}</code></pre>
+                  <button v-on:click="view_file" v-bind:path="entrypoint.javascript_path" type="button" class="btn btn-sm btn-primary view-full-file-button">View Full File</button>
+                  <br />
+                  <i>Note: Line numbers are for "beautified extension". You can download this version via the menu on the left-side of the page..</i>
+                  <hr />
+                  <div v-if="entrypoint.indicator.resources.length > 0">
+                    <b>Further Resource(s)</b>:<br />
+                    <ul>
+                      <li v-for="resource_link in entrypoint.indicator.resources">
+                        <a target="_blank" v-bind:href="resource_link">{{resource_link}}</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <b>Location</b>: <code>/{{entrypoint.javascript_path}}</code><br />
+                  <b>URI</b>: <code>chrome-extension://{{extension_id}}/{{entrypoint.javascript_path}}</code><br />
+                  <span v-if="entrypoint.javascript_path in report_data.content_scripts" class="badge badge-pill badge-primary">Content Script</span>
+                  <span v-if="report_data.background_scripts.indexOf( entrypoint.javascript_path ) !== -1" class="badge badge-pill badge-primary">Background Script</span>
+                  <span v-if="report_data.browser_action_scripts.indexOf( entrypoint.javascript_path ) !== -1" class="badge badge-pill badge-primary">Browser Action (Popup) Script</span>
+                  <div v-if="entrypoint.javascript_path in report_data.content_scripts">
+                    <b>Content Script URI Match(es):</b>
+                    <ul>
+                      <li v-for="match_url_pattern in report_data.content_scripts[entrypoint.javascript_path]">
+                        <code>{{match_url_pattern}}</code>
+                      </li>
+                    </ul>
+                  </div>
+                  <div v-if="entrypoint.javascript_path in report_data.script_to_page_map">
+                    <b>Included in the following HTML page(s):</b>
+                    <ul>
+                      <li v-for="html_page_path in report_data.script_to_page_map[entrypoint.javascript_path]">
+                        <code>chrome-extension://{{extension_id}}/{{html_page_path}}</code> <span v-if="report_data.web_accessible_resources_paths.indexOf(html_page_path) !== -1" class="badge badge-pill badge-primary">Web Accessible</span> <span v-if="report_data.web_accessible_resources_paths.indexOf(html_page_path) == -1" class="badge badge-pill badge-secondary">Navigation Blocked</span> <span v-if="html_page_path == report_data.background_page" class="badge badge-pill badge-primary">Background Page</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              </div> <!-- END OF entry-points -->
+              <div v-if="menu == 'dangerous-functions'" class="dangerous-functions-dashboard">
+                <h1>Dangerous Function(s)</h1>
+                <div class="card border-secondary mb-3">
+                  <div class="card-header"><b>Filters</b></div>
+                  <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center" v-for="visible_entity_name in static_risky_javascript_functions">
+                      <span>
+                        <code>{{visible_entity_name}}</code>
+                      </span>
+                      <span>
+                        <button style="margin-left: 10px" v-on:click="hide_visible" filterclass="risky_javascript_functions" v-bind:name="visible_entity_name" type="button" class="btn btn-sm btn-danger" v-if="visible_risky_javascript_functions.includes(visible_entity_name)">Hide</button>
+                        <button style="margin-left: 10px" v-on:click="show_visible" filterclass="risky_javascript_functions" v-bind:name="visible_entity_name" type="button" class="btn btn-sm btn-primary" v-if="!visible_risky_javascript_functions.includes(visible_entity_name)">Show</button>
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="card border-secondary mb-3" v-for="dangerousfunction in report_data.risky_javascript_functions" v-if="visible_risky_javascript_functions.includes(dangerousfunction.indicator.name)">
+                  <div class="card-header"><b>{{dangerousfunction.indicator.name}}</b></div>
+                  <div class="card-body">
+                    <p class="card-text"><b>Description</b>: <p style="display: inline" v-html="dangerousfunction.indicator.description"></p></p>
+                  <pre v-highlightjs="dangerousfunction.context_block"><code class="javascript">{{dangerousfunction.context_block}}</code></pre>
+                  <button style="margin-left: 0px; margin-top: 0px; margin-bottom: 10px;" v-on:click="view_file" v-bind:path="dangerousfunction.javascript_path" type="button" class="btn btn-sm btn-primary">View Full File</button>
+                  <br />
+                  <i>Note: Line numbers are for "beautified extension". You can download this version via the menu on the left-side of the page..</i>
+                  <hr />
+                  <div v-if="dangerousfunction.indicator.resources.length > 0">
+                    <b>Further Resource(s)</b>:<br />
+                    <ul>
+                      <li v-for="resource_link in dangerousfunction.indicator.resources">
+                        <a target="_blank" v-bind:href="resource_link">{{resource_link}}</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <b>Location</b>: <code>/{{dangerousfunction.javascript_path}}</code><br />
+                  <b>URI</b>: <code>chrome-extension://{{extension_id}}/{{dangerousfunction.javascript_path}}</code><br />
+                  <span v-if="dangerousfunction.javascript_path in report_data.content_scripts" class="badge badge-pill badge-primary">Content Script</span>
+                  <span v-if="report_data.background_scripts.indexOf( dangerousfunction.javascript_path ) !== -1" class="badge badge-pill badge-primary">Background Script</span>
+                  <span v-if="report_data.browser_action_scripts.indexOf( dangerousfunction.javascript_path ) !== -1" class="badge badge-pill badge-primary">Browser Action (Popup) Script</span>
+                  <div v-if="dangerousfunction.javascript_path in report_data.content_scripts">
+                    <b>Content Script URI Match(es):</b>
+                    <ul>
+                      <li v-for="match_url_pattern in report_data.content_scripts[dangerousfunction.javascript_path]">
+                        <code>{{match_url_pattern}}</code>
+                      </li>
+                    </ul>
+                  </div>
+                  <div v-if="dangerousfunction.javascript_path in report_data.script_to_page_map">
+                    <b>Included in the following HTML page(s):</b>
+                    <ul>
+                      <li v-for="html_page_path in report_data.script_to_page_map[dangerousfunction.javascript_path]">
+                        <code>chrome-extension://{{extension_id}}/{{html_page_path}}</code> <span v-if="report_data.web_accessible_resources_paths.indexOf(html_page_path) !== -1" class="badge badge-pill badge-primary">Web Accessible</span> <span v-if="report_data.web_accessible_resources_paths.indexOf(html_page_path) == -1" class="badge badge-pill badge-secondary">Navigation Blocked</span> <span v-if="html_page_path == report_data.background_page" class="badge badge-pill badge-primary">Background Page</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              </div> <!-- END OF dangerous-functions -->
+              <div v-if="menu == 'csp'" class="csp-dashboard">
+                <h1>Content Security Policy (CSP) Report</h1>
+                <code><h3>{{report_data.content_security_policy}}</h3></code>
+                <hr />
+                <div class="card border-secondary mb-3" v-for="csp_issue in report_data.csp_report">
+                  <div class="card-header"><b>{{csp_issue.name}}</b></div>
+                  <div class="card-body">
+                    <p class="card-text">
+                      <b>Risk</b>: <code>{{csp_issue.risk.toUpperCase()}}</code><br />
+                      <b>Description</b>: <span style="display: inline">{{csp_issue.description}}</span>
+                    </p>
+                  </div>
+                </div>
+                <hr />
+                <p>
+                  Special thanks to <a target="_blank" href="https://twitter.com/littlejoetables">Moloch</a> for the Python <a target="_blank" href="https://github.com/moloch--/CSP-Bypass">CSP-Bypass library</a> and the following folks for their CSP-bypass lists: <a target="_blank" href="https://github.com/google/csp-evaluator">Google's CSP Evaluator Core Library</a>, <a target="_blank" href="https://github.com/GoSecure/csp-auditor/">GoSecure CSP Auditor</a>, and <a target="_blank" href="https://github.com/mozilla/http-observatory/">Mozilla HTTP Observatory</a>.
+                </p>
+                </div> <!-- END OF csp -->
+                <div v-if="menu == 'fingerprintable-resources'" class="fingerprintable-resources-dashboard">
+                  <h1>Extension Fingerprinting</h1>
+                  <div class="card border-secondary mb-3">
+                    <div class="card-header"><b>Fingerprintable Resource(s)</b></div>
+                    <div class="card-body">
+                      <p class="card-text">
+                        List of fingerprintable extension URI(s): <br />
+                        <ul>
+                          <li v-for="web_accessible_resources_path in report_data.web_accessible_resources_paths">
+                            <code>chrome-extension://{{extension_id}}/{{web_accessible_resources_path}}</code> <button v-on:click="view_file" v-bind:path="web_accessible_resources_path" type="button" class="btn btn-sm btn-primary view-full-file-button-sm"><span data-feather="maximize-2"></span></button>
+                          </li>
+                        </ul>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="card border-secondary mb-3">
+                    <div class="card-header">
+                      <b>Fingerprinting JavaScript</b> 
+                      <button style="padding-left: 10px; float: right" class="btn btn-sm btn-primary clipboard-copy" v-bind:data-clipboard-text="report_data.fingerprint_js">
+                        Copy JavaScript to Clipboard
+                      </button>
+                    </div>
+                  <pre style="margin-bottom: 0px" v-highlightjs="report_data.fingerprint_js"><code style="padding: 20px;" class="javascript">{{report_data.fingerprint_js}}</code></pre>
+                </div>
+                </div> <!-- END OF fingerprintable-resources -->
+                <div v-if="menu == 'view-file'" class="view-file-dashboard">
+                  <div class="card border-secondary mb-3">
+                  <div class="card-header">
+                    <button style="margin-right: 15px;" v-on:click="close_file" type="button" class="btn btn-sm btn-danger">Close</button>
+                    <code>{{view_file_filename}}</code>
+                  </div>
+                  <div v-if="view_file_type == 'text'">
+                    <div class="card-body" style="padding: 0px; margin-top: -18px; margin-bottom: -37px;">
+                    <pre style="margin-bottom: 0px; width: 100%;" v-highlightjs="view_file_contents">
+                      <code style="padding: 20px;">{{view_file_contents}}</code>
+                    </pre>
+                  </div>
+                  </div>
+                  <div style="margin: 0px; display: inline" v-if="view_file_type == 'image'">
+                    <img style="margin: 15px" v-bind:src="view_file_contents" />
+                  </div>
+                </div>
+                </div> <!-- END OF view-file -->
+                <div v-if="menu == 'potential-clickjacking'" class="potential-clickjacking-dashboard">
+                  <h1>Potentially Clickjackable Page(s)</h1>
+                  <div class="card border-secondary mb-3">
+                    <div class="card-header">
+                      <b>Enumerated HTML Resources With <code>web_accessible_resources</code> Set</b>
+                    </div>
+                    <div class="card-body">
+                      <p class="card-text">
+                      The following HTML pages were found to have the <code>web_accessible_resources</code> directive set. This directive allows for the iframing of these pages in external web pages. If any of these pages contain sensitive application UI, the UI could potentially be redressed to perform a <a href="https://www.owasp.org/index.php/Clickjacking" target="_blank">clickjacking attack</a>. Note that these results <i>must</i> be validated and are context specific.
+                      <ul>
+                        <li v-for="html_page in report_data.web_accessible_html">
+                          <code>chrome-extension://{{extension_id}}/{{html_page}}</code> <button v-on:click="view_file" v-bind:path="html_page" type="button" class="btn btn-sm btn-primary view-full-file-button-sm"><span data-feather="maximize-2"></span></button>
+                        </li>
+                      </ul>
+                      </p>
+                    </div>
+                  </div>
+                </div> <!-- END OF potential-clickjacking -->
+                </main>
+            </div>
+          </div>
+          <!-- Bootstrap core JavaScript
+          ================================================== -->
+          <!-- Placed at the end of the document so the pages load faster -->
+          <script src="js/vue.js"></script>
+          <script src="js/jquery-3.2.1.slim.min.js"></script>
+          <script src="js/bootstrap.min.js"></script>
+          <script src="js/feather.min.js"></script>
+          <script src="js/codemirror.js"></script>
+          <script src="js/highlight.min.js"></script>
+          <script src="js/jszip.min.js"></script>
+          <script src="js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+          <script src="js/clipboard.min.js"></script>
+          <script src="js/app.js"></script>
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=UA-44373305-1"></script>
+            <script>
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+
+              gtag('config', 'UA-44373305-1');
+            </script>
+        </body>
+      </html>

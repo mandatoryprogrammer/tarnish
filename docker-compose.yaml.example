@@ -1,0 +1,19 @@
+version: '3'
+services:
+    tarnishserver:
+        build: ./tarnish-server/
+        environment:
+            - redis_backend=redis://REDIS_HOSTNAME:6379/0
+            - aws_secret_key=REPLACE_ME_AWS_SECRET_KEY_WITH_S3_WRITE_PERMS
+            - aws_access_key=REPLACE_ME_AWS_ACCESS_KEY_WITH_S3_WRITE_PERMS
+            - extension_s3_bucket=REPLACE_ME_WITH_EXTENSIONS_S3
+            - debugging=false
+        ports:
+            - "80:80"
+    tarnishworker:
+        build: ./tarnish-worker/
+        environment:
+            - redis_backend=redis://REDIS_HOSTNAME:6379/0
+            - aws_secret_key=REPLACE_ME_AWS_SECRET_KEY_WITH_S3_WRITE_PERMS
+            - aws_access_key=REPLACE_ME_AWS_ACCESS_KEY_WITH_S3_WRITE_PERMS
+            - extension_s3_bucket=REPLACE_ME_WITH_EXTENSIONS_S3

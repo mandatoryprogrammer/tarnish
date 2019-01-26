@@ -1,0 +1,13 @@
+.view-full-file-button {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-bottom: 10px;
+}
+
+.view-full-file-button-sm {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 3px !important;
+	margin-right: 3px !important;
+	padding: 0px !important;
+}

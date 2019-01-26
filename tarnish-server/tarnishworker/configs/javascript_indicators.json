@@ -1,0 +1,363 @@
+{
+	"version": "1.0.0",
+	"js_filename_blacklist": [
+		"jquery"
+	],
+	"web_entrypoints": [
+		{
+			"name": "window.name Usage",
+			"description": "<code>window.name</code> can be used as an entry point for user-controlled data due the fact that it's accessible cross-origin. Useful when combined with a resource specified under <code>web_accessible_resources</code>.",
+			"string": "window.name",
+			"regex": false,
+			"web_accessible": true,
+			"resources": [ "https://developer.mozilla.org/en-US/docs/Web/API/Window/name" ]
+		},
+		{
+			"name": "location.hash Usage",
+			"description": "<code>location.hash</code> can be used as an entry point for user-controlled data. Useful when combined with a resource specified under <code>web_accessible_resources</code>.",
+			"string": "location.hash",
+			"web_accessible": true,
+			"regex": false,
+			"resources": [ "https://developer.mozilla.org/en-US/docs/Web/API/Window/location" ]
+		},
+		{
+			"name": "location.href Usage",
+			"description": "<code>location.href</code> can be used as an entry point for user-controlled data. Useful when combined with a resource specified under <code>web_accessible_resources</code>.",
+			"string": "location.href",
+			"regex": false,
+			"web_accessible": true,
+			"resources": [ "https://developer.mozilla.org/en-US/docs/Web/API/Window/location" ]
+		},
+		{
+			"name": "chrome.tabs.query Usage",
+			"description": "<code>chrome.tabs.query</code> returns information about a queried tab and can be used as an entry point for user-controlled data.",
+			"string": "chrome.tabs.query(",
+			"regex": false,
+			"resources": [ "https://developer.chrome.com/extensions/tabs#method-query" ]
+		},
+		{
+			"name": "chrome.tabs.get Usage",
+			"description": "<code>chrome.tabs.get</code> returns information about a given tab and can be used as an entry point for user-controlled data.",
+			"string": "chrome.tabs.get(",
+			"regex": false,
+			"resources": [ "https://developer.chrome.com/extensions/tabs#method-get" ]
+		},
+		{
+			"name": "chrome.tabs.getCurrent Usage",
+			"description": "<code>chrome.tabs.getCurrent</code> returns information about the current tab and can be used as an entry point for user-controlled data.",
+			"string": "chrome.tabs.getCurrent(",
+			"regex": false,
+			"resources": [ "https://developer.chrome.com/extensions/tabs#method-getCurrent" ]
+		},
+		{
+			"name": "chrome.tabs.getSelected Usage",
+			"description": "<code>chrome.tabs.getSelected</code> returns information about the selected tab and can be used as an entry point for user-controlled data.",
+			"string": "chrome.tabs.getSelected(",
+			"regex": false,
+			"resources": [ "https://developer.chrome.com/extensions/tabs#method-getSelected" ]
+		},
+		{
+			"name": "chrome.tabs.getAllInWindow Usage",
+			"description": "<code>chrome.tabs.getAllInWindow</code> returns information about the tabs in a given window and can be used as an entry point for user-controlled data.",
+			"string": "chrome.tabs.getAllInWindow(",
+			"regex": false,
+			"resources": [ "https://developer.chrome.com/extensions/tabs#method-getAllInWindow" ]
+		},
+		{
+			"name": "chrome.runtime.onMessage Usage",
+			"description": "<code>chrome.runtime.onMessage</code> is fired when a message is sent from either an extension process (by <code>runtime.sendMessage</code>) or a content script (by <code>tabs.sendMessage</code>).",
+			"string": "chrome.runtime.onMessage.addListener(",
+			"regex": false,
+			"resources": [ "https://developer.chrome.com/extensions/runtime#event-onMessage" ]
+		},
+		{
+			"name": "chrome.runtime.onConnect Usage",
+			"description": "Fired when a connection is made from either an extension process or a content script (by <code>runtime.connect</code>).",
+			"string": "chrome.runtime.onConnect.addListener(",
+			"regex": false,
+			"resources": [ "https://developer.chrome.com/extensions/runtime#event-onConnect" ]
+		},
+		{
+			"name": "chrome.runtime.onMessageExternal Usage",
+			"description": "<code>chrome.runtime.onMessageExternal</code> listens for messages sent from other apps/extensions/websites. Website(s) must be specified via the <code>externally_connectable</code> property in the extension manifest.",
+			"string": "chrome.runtime.onMessageExternal.addListener(",
+			"regex": false,
+			"resources": [ "https://developer.chrome.com/extensions/runtime#event-onMessageExternal" ]
+		},
+		{
+			"name": "chrome.runtime.onConnectExternal Usage",
+			"description": "<code>chrome.runtime.onConnectExternal</code> listens for messages sent from other apps/extensions/websites. Website(s) must be specified via the <code>externally_connectable</code> property in the extension manifest.",
+			"string": "chrome.runtime.onConnectExternal.addListener(",
+			"regex": false,
+			"resources": [ "https://developer.chrome.com/extensions/runtime#event-onConnectExternal" ]
+		},
+		{
+			"name": "window.addEventListener(\"message\") Usage",
+			"description": "<code>window.addEventListener(\"message\")</code> listens for messages sent from <code>postMessage</code>. If the <code>origin</code> of the message is not checked this can lead to security issues. Additionally, the <code>source</code> of the message should be checked to ensure it's the same <code>window</code> that the Content Script is running on.",
+			"string": false,
+			"web_accessible": true,
+			"regex": "window\\.addEventListener\\([ ]?[\\\"']message[\\\"']",
+			"resources": [ "https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage" ]
+		},
+		{
+			"name": ".addEventListener() Usage",
+			"description": "<code>.addEventListener()</code> listens for a JavaScript event. In a <b>Content Script</b>, if a JavaScript event is not validated by checking <a target=\"_blank\" href=\"https://developer.mozilla.org/en-US/docs/Web/API/Event/isTrusted\"><code>isTrusted</code></a> it can be spoofed by a malicious web page.",
+			"string": ".addEventListener(",
+			"regex": false,
+			"type": "content_script",
+			"resources": [ "https://developer.mozilla.org/en-US/docs/Web/API/Event/isTrusted", "https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener" ]
+		},
+		{
+			"name": "jQuery .on() Usage",
+			"description": "<code>.on()</code> listens for a JavaScript event. In a <b>Content Script</b>, if a JavaScript event is not validated by checking <a target=\"_blank\" href=\"https://developer.mozilla.org/en-US/docs/Web/API/Event/isTrusted\"><code>isTrusted</code></a> it can be spoofed by a malicious web page.",
+			"string": ".on(",
+			"regex": false,
+			"type": "content_script",
+			"resources": [ "https://developer.mozilla.org/en-US/docs/Web/API/Event/isTrusted", "https://api.jquery.com/on/" ]
+		},
+		{
+			"name": "jQuery .bind() Usage",
+			"description": "<code>.bind()</code> listens for a JavaScript event. In a <b>Content Script</b>, if a JavaScript event is not validated by checking <a target=\"_blank\" href=\"https://developer.mozilla.org/en-US/docs/Web/API/Event/isTrusted\"><code>isTrusted</code></a> it can be spoofed by a malicious web page.",
+			"string": ".bind(",
+			"regex": false,
+			"type": "content_script",
+			"resources": [ "https://developer.mozilla.org/en-US/docs/Web/API/Event/isTrusted", "https://api.jquery.com/bind/" ]
+		},
+		{
+			"name": "jQuery .delegate() Usage",
+			"description": "<code>.delegate()</code> listens for a JavaScript event. In a <b>Content Script</b>, if a JavaScript event is not validated by checking <a target=\"_blank\" href=\"https://developer.mozilla.org/en-US/docs/Web/API/Event/isTrusted\"><code>isTrusted</code></a> it can be spoofed by a malicious web page.",
+			"string": ".delegate(",
+			"regex": false,
+			"type": "content_script",
+			"resources": [ "https://developer.mozilla.org/en-US/docs/Web/API/Event/isTrusted", "https://api.jquery.com/delegate/" ]
+		},
+		{
+			"name": "jQuery .live() Usage",
+			"description": "<code>.live()</code> listens for a JavaScript event. In a <b>Content Script</b>, if a JavaScript event is not validated by checking <a target=\"_blank\" href=\"https://developer.mozilla.org/en-US/docs/Web/API/Event/isTrusted\"><code>isTrusted</code></a> it can be spoofed by a malicious web page.",
+			"string": ".live(",
+			"regex": false,
+			"type": "content_script",
+			"resources": [ "https://developer.mozilla.org/en-US/docs/Web/API/Event/isTrusted", "https://api.jquery.com/live/" ]
+		},
+		{
+			"name": "jQuery .one() Usage",
+			"description": "<code>.one()</code> listens for a JavaScript event. In a <b>Content Script</b>, if a JavaScript event is not validated by checking <a target=\"_blank\" href=\"https://developer.mozilla.org/en-US/docs/Web/API/Event/isTrusted\"><code>isTrusted</code></a> it can be spoofed by a malicious web page.",
+			"string": ".one(",
+			"regex": false,
+			"type": "content_script",
+			"resources": [ "https://developer.mozilla.org/en-US/docs/Web/API/Event/isTrusted", "https://api.jquery.com/one/" ]
+		},
+		{
+			"name": "chrome.contextMenus.create Usage",
+			"description": "<code>chrome.contextMenus.create</code> creates a new context menu that accepts user-controlled input via metadata about the context menu right click action that occured. Specifically for the callback <code>onclick</code>. The parameters <code>linkUrl</code>, <code>srcUrl</code>, <code>pageUrl</code>, <code>frameUrl</code>, and <code>selectionText</code>.",
+			"string": "chrome.contextMenus.create(",
+			"regex": false,
+			"resources": [ "https://developer.chrome.com/extensions/contextMenus#method-create" ]
+		},
+		{
+			"name": "chrome.contextMenus.update Usage",
+			"description": "<code>chrome.contextMenus.update</code> updates an existing context menu and accepts user-controlled input via metadata about the context menu right click action that occured. Specifically for the callback <code>onclick</code>. The parameters <code>linkUrl</code>, <code>srcUrl</code>, <code>pageUrl</code>, <code>frameUrl</code>, and <code>selectionText</code>.",
+			"string": "chrome.contextMenus.update(",
+			"regex": false,
+			"resources": [ "https://developer.chrome.com/extensions/contextMenus#method-update" ]
+		},
+		{
+			"name": "chrome.contextMenus.onClicked.addListener Usage",
+			"description": "<code>chrome.contextMenus.onClicked.addListener</code> fires when a context menu is clicked on by a user. The parameters <code>linkUrl</code>, <code>srcUrl</code>, <code>pageUrl</code>, <code>frameUrl</code>, and <code>selectionText</code> can contain user-controlled values.",
+			"string": "chrome.contextMenus.onClicked.addListener(",
+			"regex": false,
+			"resources": [ "https://developer.chrome.com/extensions/contextMenus" ]
+		},
+		{
+			"name": "chrome.cookies.get Usage",
+			"description": "<code>chrome.cookies.get</code> retrieves information about browser cookies. The metadata for these cookies can possible be user-controller, mainly the <code>name</code> and <code>value</code> of the <a target=\"_blank\" href=\"https://developer.chrome.com/extensions/cookies#type-Cookie\"><code>Cookie</code> object.",
+			"string": "chrome.cookies.get(",
+			"regex": false,
+			"resources": [ "https://developer.chrome.com/extensions/cookies#method-get" ]
+		},
+		{
+			"name": "chrome.cookies.getAll Usage",
+			"description": "<code>chrome.cookies.getAll</code> retrieves information about browser cookies. The metadata for these cookies can possible be user-controller, mainly the <code>name</code> and <code>value</code> of the <a target=\"_blank\" href=\"https://developer.chrome.com/extensions/cookies#type-Cookie\"><code>Cookie</code> object.",
+			"string": "chrome.cookies.getAll(",
+			"regex": false,
+			"resources": [ "https://developer.chrome.com/extensions/cookies#method-getAll" ]
+		},
+		{
+			"name": "chrome.debugger.getTargets Usage",
+			"description": "The <code>TargetInfo</code> object passed to the callback of this function has user-controllable parameters of <code>title</code>, <code>url</code> and <code>faviconUrl</code>.",
+			"string": "chrome.debugger.getTargets(",
+			"regex": false,
+			"resources": [ "https://developer.chrome.com/extensions/debugger#type-TargetInfo" ]
+		}
+	],
+	"risky_functions": [
+		{
+			"name": "InnerHTML Usage",
+			"description": "<code>.innerHTML</code> when combined with user input can lead to Cross-site Scripting (XSS) vulnerabilities.",
+			"string": false,
+			"regex": "\\.innerHTML[ \\=]+",
+			"resources": [ "https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML" ]
+		},
+		{
+			"name": "OuterHTML Usage",
+			"description": "<code>.outerHTML</code> when combined with user input can lead to Cross-site Scripting (XSS) vulnerabilities.",
+			"string": false,
+			"regex": "\\.outerHTML[ \\=]+",
+			"resources": [ "https://developer.mozilla.org/en-US/docs/Web/API/Element/outerHTML" ]
+		},
+		{
+			"name": "document.write Usage",
+			"description": "<code>document.write</code> when combined with user input can lead to Cross-site Scripting (XSS) vulnerabilities.",
+			"string": "document.write(",
+			"regex": false,
+			"resources": [ "https://developer.mozilla.org/en-US/docs/Web/API/Document/write" ]
+		},
+		{
+			"name": "document.writeln Usage",
+			"description": "<code>document.writeln</code> when combined with user input can lead to Cross-site Scripting (XSS) vulnerabilities.",
+			"string": "document.writeln(",
+			"regex": false,
+			"resources": [ "https://developer.mozilla.org/en-US/docs/Web/API/Document/writeln" ]
+		},
+		{
+			"name": "jQuery .html()",
+			"description": "<code>.html()</code> when combined with user input can lead to Cross-site Scripting (XSS) vulnerabilities. When the CSP directive <code>'unsafe-eval'</code> is used unsafely in conjunction with this function, <a href=\"https://statuscode.ch/2017/03/CSP-unsafe-eval-and-jquery/\" target=\"_blank\">XSS is possible.</a>",
+			"string": false,
+			"regex": "\\.html\\([^\\)]",
+			"resources": [ "https://api.jquery.com/html/" ]
+		},
+		{
+			"name": "jQuery .before()",
+			"description": "<code>.before()</code> when combined with user input can lead to Cross-site Scripting (XSS) vulnerabilities. When the CSP directive <code>'unsafe-eval'</code> is used unsafely in conjunction with this function, <a href=\"https://statuscode.ch/2017/03/CSP-unsafe-eval-and-jquery/\" target=\"_blank\">XSS is possible.</a>",
+			"string": ".before(",
+			"regex": false,
+			"resources": [ "https://api.jquery.com/before/" ]
+		},
+		{
+			"name": "jQuery .insertBefore()",
+			"description": "<code>.insertBefore()</code> when combined with user input can lead to Cross-site Scripting (XSS) vulnerabilities. When the CSP directive <code>'unsafe-eval'</code> is used unsafely in conjunction with this function, <a href=\"https://statuscode.ch/2017/03/CSP-unsafe-eval-and-jquery/\" target=\"_blank\">XSS is possible.</a>",
+			"string": ".insertBefore(",
+			"regex": false,
+			"resources": [ "https://api.jquery.com/insertBefore/" ]
+		},
+		{
+			"name": "jQuery .insertAfter()",
+			"description": "<code>.insertAfter()</code> when combined with user input can lead to Cross-site Scripting (XSS) vulnerabilities. When the CSP directive <code>'unsafe-eval'</code> is used unsafely in conjunction with this function, <a href=\"https://statuscode.ch/2017/03/CSP-unsafe-eval-and-jquery/\" target=\"_blank\">XSS is possible.</a>",
+			"string": ".insertAfter(",
+			"regex": false,
+			"resources": [ "https://api.jquery.com/insertAfter/" ]
+		},
+		{
+			"name": "jQuery .after()",
+			"description": "<code>.after()</code> when combined with user input can lead to Cross-site Scripting (XSS) vulnerabilities. When the CSP directive <code>'unsafe-eval'</code> is used unsafely in conjunction with this function, <a href=\"https://statuscode.ch/2017/03/CSP-unsafe-eval-and-jquery/\" target=\"_blank\">XSS is possible.</a>",
+			"string": ".after(",
+			"regex": false,
+			"resources": [ "https://api.jquery.com/after/" ]
+		},
+		{
+			"name": "jQuery .append()",
+			"description": "<code>.append()</code> when combined with user input can lead to Cross-site Scripting (XSS) vulnerabilities. When the CSP directive <code>'unsafe-eval'</code> is used unsafely in conjunction with this function, <a href=\"https://statuscode.ch/2017/03/CSP-unsafe-eval-and-jquery/\" target=\"_blank\">XSS is possible.</a>",
+			"string": ".append(",
+			"regex": false,
+			"resources": [ "https://api.jquery.com/append/" ]
+		},
+		{
+			"name": "jQuery .prepend()",
+			"description": "<code>.prepend()</code> when combined with user input can lead to Cross-site Scripting (XSS) vulnerabilities. When the CSP directive <code>'unsafe-eval'</code> is used unsafely in conjunction with this function, <a href=\"https://statuscode.ch/2017/03/CSP-unsafe-eval-and-jquery/\" target=\"_blank\">XSS is possible.</a>",
+			"string": ".prepend(",
+			"regex": false,
+			"resources": [ "https://api.jquery.com/prepend/" ]
+		},
+		{
+			"name": "jQuery .wrap()",
+			"description": "<code>.wrap()</code> when combined with user input can lead to Cross-site Scripting (XSS) vulnerabilities. When the CSP directive <code>'unsafe-eval'</code> is used unsafely in conjunction with this function, <a href=\"https://statuscode.ch/2017/03/CSP-unsafe-eval-and-jquery/\" target=\"_blank\">XSS is possible.</a>",
+			"string": ".wrap(",
+			"regex": false,
+			"resources": [ "https://api.jquery.com/wrap/" ]
+		},
+		{
+			"name": "jQuery .wrapAll()",
+			"description": "<code>.wrapAll()</code> when combined with user input can lead to Cross-site Scripting (XSS) vulnerabilities. When the CSP directive <code>'unsafe-eval'</code> is used unsafely in conjunction with this function, <a href=\"https://statuscode.ch/2017/03/CSP-unsafe-eval-and-jquery/\" target=\"_blank\">XSS is possible.</a>",
+			"string": ".wrapAll(",
+			"regex": false,
+			"resources": [ "https://api.jquery.com/wrapAll/" ]
+		},
+		{
+			"name": "jQuery .wrapInner()",
+			"description": "<code>.wrapInner()</code> when combined with user input can lead to Cross-site Scripting (XSS) vulnerabilities. When the CSP directive <code>'unsafe-eval'</code> is used unsafely in conjunction with this function, <a href=\"https://statuscode.ch/2017/03/CSP-unsafe-eval-and-jquery/\" target=\"_blank\">XSS is possible.</a>",
+			"string": ".wrapInner(",
+			"regex": false,
+			"resources": [ "https://api.jquery.com/wrapInner/" ]
+		},
+		{
+			"name": "jQuery .appendTo()",
+			"description": "<code>.appendTo()</code> when combined with user input can lead to Cross-site Scripting (XSS) vulnerabilities. When the CSP directive <code>'unsafe-eval'</code> is used unsafely in conjunction with this function, <a href=\"https://statuscode.ch/2017/03/CSP-unsafe-eval-and-jquery/\" target=\"_blank\">XSS is possible.</a>",
+			"string": ".appendTo(",
+			"regex": false,
+			"resources": [ "https://api.jquery.com/appendTo/" ]
+		},
+		{
+			"name": "jQuery .prependTo()",
+			"description": "<code>.prependTo()</code> when combined with user input can lead to Cross-site Scripting (XSS) vulnerabilities. When the CSP directive <code>'unsafe-eval'</code> is used unsafely in conjunction with this function, <a href=\"https://statuscode.ch/2017/03/CSP-unsafe-eval-and-jquery/\" target=\"_blank\">XSS is possible.</a>",
+			"string": ".prependTo(",
+			"regex": false,
+			"resources": [ "https://api.jquery.com/prependTo/" ]
+		},
+		{
+			"name": "jQuery attr(\"href\")",
+			"description": "<code>.attr(\"href\")</code> when combined with user input in a link can lead to Cross-site Scripting (XSS) vulnerabilities via <code>javascript:</code> URIs.",
+			"string": false,
+			"regex": "\\.attr\\([ ]?[\\\"']href[\\\"']",
+			"resources": [ "https://api.jquery.com/attr/" ]
+		},
+		{
+			"name": "setAttribute(\"href\") Usage",
+			"description": "<code>.setAttribute(\"href\")</code> when combined with user input in a link can lead to Cross-site Scripting (XSS) vulnerabilities via <code>javascript:</code> URIs.",
+			"string": false,
+			"regex": "\\.setAttribute\\([ ]?[\\\"']href[\\\"']",
+			"resources": [ "https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute" ]
+		},
+		{
+			"name": "setAttribute(\"src\") Usage",
+			"description": "<code>.setAttribute(\"src\")</code> when combined with user input and an iframe <code>src</code> can result in Cross-site Scripting (XSS) vulnerabilities via <code>javascript:</code> URIs.",
+			"string": false,
+			"regex": "\\.setAttribute\\([ ]?[\\\"']src[\\\"']",
+			"resources": [ "https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute" ]
+		},
+		{
+			"name": "chrome.tabs.update Usage",
+			"description": "When the <code>url</code> property of the updateProperties argument is controlled by an attacker, a <code>javascript:</code> URI can be specified to obtain Cross-site Scripting (XSS) in the context of the origin running in the tab.",
+			"string": "chrome.tabs.update(",
+			"regex": false,
+			"resources": [ "https://developer.chrome.com/extensions/tabs#method-update" ]
+		},
+		{
+			"name": "chrome.tabs.executeScript Usage",
+			"description": "If user-controlled input is utilized in creating the string passed in the <code>code</code> property of the <code>details</code> parameter, Cross-site Scripting (XSS) can occur.",
+			"string": "chrome.tabs.executeScript(",
+			"regex": false,
+			"resources": [ "https://developer.chrome.com/extensions/tabs#method-executeScript" ]
+		},
+		{
+			"name": "eval() Usage",
+			"description": "When user-controlled input is mixed unsafely with JavaScript code and passed to <code>eval</code>, Cross-site Scripting (XSS) vulnerabilities can occur.",
+			"string": "eval(",
+			"regex": false,
+			"resources": [ "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval" ]
+		},
+		{
+			"name": "jQuery globalEval() Usage",
+			"description": "When user-controlled input is mixed unsafely with JavaScript code and passed to <code>globalEval</code>, Cross-site Scripting (XSS) vulnerabilities can occur.",
+			"string": "globalEval(",
+			"regex": false,
+			"resources": [ "https://api.jquery.com/jquery.globaleval/" ]
+		},
+		{
+			"name": "Handlebars SafeString() Usage",
+			"description": "When user-controlled input is mixed unsafely with HTML markup and passed to <code>SafeString</code>, Cross-site Scripting (XSS) vulnerabilities can occur.",
+			"string": "SafeString(",
+			"regex": false,
+			"resources": [ "http://handlebarsjs.com/expressions.html" ]
+		}
+	]
+}

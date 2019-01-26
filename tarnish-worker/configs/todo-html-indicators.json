@@ -1,0 +1,37 @@
+[
+		{
+			"name": "Unsafe Mustache or Handlebars Template Usage {{{triple_curly_brace}}}",
+			"description": "In both the mustache.js and Handlerbars templating framework when user-controlled input is mixed unsafely with HTML markup and rendered with <code>{{{user_input}}}</code> Cross-site Scripting (XSS) vulnerabilities can occur.",
+			"string": "{{{",
+			"regex": false,
+			"resources": [ "https://mustache.github.io/mustache.5.html", "http://handlebarsjs.com/expressions.html" ]
+		},
+		{
+			"name": "Unsafe Mustache Template Usage {{&user_input}}",
+			"description": "When user-controlled input is mixed unsafely with JavaScript code and rendered with <code>{{&user_input}}</code> (mustache.js double curly brace and ampersand), Cross-site Scripting (XSS) vulnerabilities can occur.",
+			"string": "{{&",
+			"regex": false,
+			"resources": [ "https://mustache.github.io/mustache.5.html" ]
+		},
+		{
+			"name": "Unsafe Underscore.js Templating <%= Usage",
+			"description": "When user-controlled input is mixed unsafely with HTML markup in conjunction with <code><%= user_input %></code>, Cross-site Scripting (XSS) vulnerabilities can occur.",
+			"string": "<%=",
+			"regex": false,
+			"resources": [ "http://underscorejs.org/" ]
+		},
+		{
+			"name": "Unsafe Vue.js v-html Usage",
+			"description": "When user-controlled input is mixed unsafely with HTML markup in conjunction with <code>v-html</code>, Cross-site Scripting (XSS) vulnerabilities can occur.",
+			"string": "v-html=",
+			"regex": false,
+			"resources": [ "https://vuejs.org/v2/guide/syntax.html#Raw-HTML" ]
+		},
+		{
+			"name": "Unsafe React dangerouslySetInnerHTML() Usage",
+			"description": "dangerouslySetInnerHTML is React’s replacement for using innerHTML in the browser DOM. In general, setting HTML from code is risky because it’s easy to inadvertently expose your users to a cross-site scripting (XSS) attack.",
+			"string": "dangerouslySetInnerHTML",
+			"regex": false,
+			"resources": [ "https://reactjs.org/docs/dom-elements.html#dangerouslysetinnerhtml" ]
+		}
+]
