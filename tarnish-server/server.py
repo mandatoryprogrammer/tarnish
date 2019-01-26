@@ -133,7 +133,7 @@ class TaskSpawner(object):
 class BaseHandler(tornado.web.RequestHandler):
     def __init__(self, *args, **kwargs):
 		super(BaseHandler, self).__init__(*args, **kwargs)
-		self.set_header("Access-Control-Allow-Origin", "https://thehackerblog.com")
+		self.set_header("Access-Control-Allow-Origin", os.environ.get( "frontend_origin" ) )
 		self.set_header("Access-Control-Allow-Headers", "Content-Type")
 		self.set_header("X-Frame-Options", "deny")
 		self.set_header("Content-Security-Policy", "default-src 'self'")

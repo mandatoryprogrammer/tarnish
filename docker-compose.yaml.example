@@ -8,6 +8,7 @@ services:
             - aws_access_key=REPLACE_ME_AWS_ACCESS_KEY_WITH_S3_WRITE_PERMS
             - extension_s3_bucket=REPLACE_ME_WITH_EXTENSIONS_S3
             - debugging=false
+            - frontend_origin=https://your-web-origin.com
         ports:
             - "80:80"
     tarnishworker:
@@ -17,3 +18,4 @@ services:
             - aws_secret_key=REPLACE_ME_AWS_SECRET_KEY_WITH_S3_WRITE_PERMS
             - aws_access_key=REPLACE_ME_AWS_ACCESS_KEY_WITH_S3_WRITE_PERMS
             - extension_s3_bucket=REPLACE_ME_WITH_EXTENSIONS_S3
+            - frontend_origin=https://your-web-origin.com
