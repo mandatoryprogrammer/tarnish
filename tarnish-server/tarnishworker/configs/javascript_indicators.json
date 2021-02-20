@@ -170,14 +170,14 @@
 		},
 		{
 			"name": "chrome.cookies.get Usage",
-			"description": "<code>chrome.cookies.get</code> retrieves information about browser cookies. The metadata for these cookies can possible be user-controller, mainly the <code>name</code> and <code>value</code> of the <a target=\"_blank\" href=\"https://developer.chrome.com/extensions/cookies#type-Cookie\"><code>Cookie</code> object.",
+			"description": "<code>chrome.cookies.get</code> retrieves information about browser cookies. The metadata for these cookies can possibly be user-controlled, mainly the <code>name</code> and <code>value</code> of the <a target=\"_blank\" href=\"https://developer.chrome.com/extensions/cookies#type-Cookie\"><code>Cookie</code> object.",
 			"string": "chrome.cookies.get(",
 			"regex": false,
 			"resources": [ "https://developer.chrome.com/extensions/cookies#method-get" ]
 		},
 		{
 			"name": "chrome.cookies.getAll Usage",
-			"description": "<code>chrome.cookies.getAll</code> retrieves information about browser cookies. The metadata for these cookies can possible be user-controller, mainly the <code>name</code> and <code>value</code> of the <a target=\"_blank\" href=\"https://developer.chrome.com/extensions/cookies#type-Cookie\"><code>Cookie</code> object.",
+			"description": "<code>chrome.cookies.getAll</code> retrieves information about browser cookies. The metadata for these cookies can possibly be user-controlled, mainly the <code>name</code> and <code>value</code> of the <a target=\"_blank\" href=\"https://developer.chrome.com/extensions/cookies#type-Cookie\"><code>Cookie</code> object.",
 			"string": "chrome.cookies.getAll(",
 			"regex": false,
 			"resources": [ "https://developer.chrome.com/extensions/cookies#method-getAll" ]
