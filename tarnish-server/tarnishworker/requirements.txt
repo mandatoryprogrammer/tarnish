@@ -27,5 +27,5 @@ six==1.11.0
 tornado==5.0.2
 tornado-celery==0.3.5
 tornado-redis==2.4.18
-urllib3==1.22
+urllib3==1.26.5
 vine==1.1.4
