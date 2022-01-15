@@ -113,7 +113,7 @@
     "rollup": "^0.53.4",
     "rollup-plugin-babel": "4.0.0-beta.0",
     "rollup-plugin-node-resolve": "^3.0.2",
-    "shelljs": "^0.7.8",
+    "shelljs": "^0.8.5",
     "shx": "^0.2.2",
     "sri-toolbox": "^0.2.0",
     "stylelint": "^8.4.0",
