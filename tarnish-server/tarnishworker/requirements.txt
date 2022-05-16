@@ -20,7 +20,7 @@ python-dateutil==2.7.2
 pytz==2018.4
 PyYAML==3.12
 redis==2.10.6
-requests==2.18.4
+requests==2.20.0
 s3transfer==0.1.13
 singledispatch==3.4.0.3
 six==1.11.0
