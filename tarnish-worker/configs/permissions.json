@@ -1,97 +1,117 @@
 {
-	"version": "1.0.0",
-	"permissions_metadata": {
-		"bookmarks": {
-			"warning_text": "Read and modify your bookmarks",
-			"notes": "The <code>bookmarks</code> permission is required by the <code>chrome.bookmarks</code> module."
-		},
-		"history": {
-			"warning_text": "Read and modify your browsing history",
-			"notes": "The <code>history</code> permission is required by chrome.history.<br />The <code>topSites</code> permission is required by <code>chrome.topSites</code>."
-		},
-		"topSites": {
-			"warning_text": "Read and modify your browsing history",
-			"notes": "The <code>history</code> permission is required by chrome.history.<br />The <code>topSites</code> permission is required by <code>chrome.topSites</code>."
-		},
-		"tabs": {
-			"warning_text": "Access your browsing activity",
-			"notes": "The <code>tabs</code> permission is required by the <code>chrome.tabs</code> and <code>chrome.windows</code> modules.<br />The <code>webNavigation</code> permission is required by the <code>chrome.webNavigation</code> module."
-		},
-		"webNavigation": {
-			"warning_text": "Access your browsing activity",
-			"notes": "The <code>tabs</code> permission is required by the <code>chrome.tabs</code> and <code>chrome.windows</code> modules.<br />The <code>webNavigation</code> permission is required by the <code>chrome.webNavigation</code> module."
-		},
-		"contentSettings": {
-			"warning_text": "Manipulate settings that specify whether websites can use features such as cookies, JavaScript, plugins, geolocation, microphone, camera etc.",
-			"notes": "The <code>contentSettings</code> permission is required by <code>chrome.contentSettings</cod<code>."
-		},
-		"debugger": {
-			"warning_text": "Read and modify all your data on all websites you visit",
-			"notes": ""
-		},
-		"pageCapture": {
-			"warning_text": "Read and modify all your data on all websites you visit",
-			"notes": ""
-		},
-		"proxy": {
-			"warning_text": "Read and modify all your data on all websites you visit",
-			"notes": ""
-		},
-		"devtools_page": {
-			"warning_text": "Read and modify all your data on all websites you visit",
-			"notes": ""
-		},
-		"http://*/*": {
-			"warning_text": "Read and modify all your data on all websites you visit",
-			"notes": ""
-		},
-		"https://*/*": {
-			"warning_text": "Read and modify all your data on all websites you visit",
-			"notes": ""
-		},
-		"*://*/*": {
-			"warning_text": "Read and modify all your data on all websites you visit",
-			"notes": ""
-		},
-		"<all_urls>": {
-			"warning_text": "Read and modify all your data on all websites you visit",
-			"notes": ""
-		},
-		"http://*/": {
-			"warning_text": "Read and modify all your data on all websites you visit",
-			"notes": ""
-		},
-		"https://*/": {
-			"warning_text": "Read and modify all your data on all websites you visit",
-			"notes": ""
-		},
-		"management": {
-			"warning_text": "Manage your apps, extensions, and themes",
-			"notes": "The <code>management</code> permission is required by the <code>chrome.management</code> module."
-		},
-		"mdns": {
-			"warning_text": "Discover devices on your local network",
-			"notes": "The <code>mdns</code> permission is required by the <code>chrome.mdns</code> module."
-		},
-		"geolocation": {
-			"warning_text": "Detect your physical location",
-			"notes": "Allows the extension to use the proposed HTML5 geolocation API without prompting the user for permission."
-		},
-		"clipboardRead": {
-			"warning_text": "Access data you copy and paste",
-			"notes": "Allows the extension to use the following editing commands with <code>document.execCommand()</code>: <code>copy</code>, <code>cut</code>"
-		},
-		"privacy": {
-			"warning_text": "Manipulate privacy-related settings",
-			"notes": "The <code>privacy</code> permission is required by the <code>chrome.privacy</code> module."
-		},
-		"signedInDevices": {
-			"warning_text": "Access the list of your signed-in devices",
-			"notes": "The <code>signedInDevices</code> permission is required by the <code>chrome.signedInDevices</code> module."
-		},
-		"ttsEngine": {
-			"warning_text": "Access all text spoken using synthesized speech",
-			"notes": "The <code>ttsEngine</code> permission is required by the <code>chrome.ttsEngine</code> module."
-		}
-	}
+  "version": "1.0.0",
+  "permissions_metadata": {
+    "storage": {
+      "warning_text": "Read and modify your data locally",
+      "notes": "The <code>storage</code> permission is required by the <code>chrome.storage</code> API"
+    },
+    "background": {
+      "warning_text": "Run background scripts actively without extension invocation",
+      "notes": "The <code>background</code> permission is required by the <code>chrome.background</code> API"
+    },
+    "identity": {
+      "warning_text": "Read user's identity information and OAuth tokens",
+      "notes": "The <code>identity</code> permission is required by the <code>chrome.identity</code> API"
+    },
+    "webRequest": {
+      "warning_text": "Allows interception/modification of network requests",
+      "notes": "The <code>webRequest</code> permission is required by the <code>chrome.webRequest</code> API"
+    },
+    "webRequestBlocking": {
+      "warning_text": "Allows blocking/redirection of network requests",
+      "notes": "The <code>webRequestBlocking</code> permission is required by the <code>chrome.webRequestBlocking</code> API"
+    },
+    "bookmarks": {
+      "warning_text": "Read and modify your bookmarks",
+      "notes": "The <code>bookmarks</code> permission is required by the <code>chrome.bookmarks</code> module."
+    },
+    "history": {
+      "warning_text": "Read and modify your browsing history",
+      "notes": "The <code>history</code> permission is required by chrome.history.<br />The <code>topSites</code> permission is required by <code>chrome.topSites</code>."
+    },
+    "topSites": {
+      "warning_text": "Read and modify your browsing history",
+      "notes": "The <code>history</code> permission is required by chrome.history.<br />The <code>topSites</code> permission is required by <code>chrome.topSites</code>."
+    },
+    "tabs": {
+      "warning_text": "Access your browsing activity",
+      "notes": "The <code>tabs</code> permission is required by the <code>chrome.tabs</code> and <code>chrome.windows</code> modules.<br />The <code>webNavigation</code> permission is required by the <code>chrome.webNavigation</code> module."
+    },
+    "webNavigation": {
+      "warning_text": "Access your browsing activity",
+      "notes": "The <code>tabs</code> permission is required by the <code>chrome.tabs</code> and <code>chrome.windows</code> modules.<br />The <code>webNavigation</code> permission is required by the <code>chrome.webNavigation</code> module."
+    },
+    "contentSettings": {
+      "warning_text": "Manipulate settings that specify whether websites can use features such as cookies, JavaScript, plugins, geolocation, microphone, camera etc.",
+      "notes": "The <code>contentSettings</code> permission is required by <code>chrome.contentSettings</cod<code>."
+    },
+    "debugger": {
+      "warning_text": "Read and modify all your data on all websites you visit",
+      "notes": ""
+    },
+    "pageCapture": {
+      "warning_text": "Read and modify all your data on all websites you visit",
+      "notes": ""
+    },
+    "proxy": {
+      "warning_text": "Read and modify all your data on all websites you visit",
+      "notes": ""
+    },
+    "devtools_page": {
+      "warning_text": "Read and modify all your data on all websites you visit",
+      "notes": ""
+    },
+    "http://*/*": {
+      "warning_text": "Read and modify all your data on all websites you visit",
+      "notes": ""
+    },
+    "https://*/*": {
+      "warning_text": "Read and modify all your data on all websites you visit",
+      "notes": ""
+    },
+    "*://*/*": {
+      "warning_text": "Read and modify all your data on all websites you visit",
+      "notes": ""
+    },
+    "<all_urls>": {
+      "warning_text": "Read and modify all your data on all websites you visit",
+      "notes": ""
+    },
+    "http://*/": {
+      "warning_text": "Read and modify all your data on all websites you visit",
+      "notes": ""
+    },
+    "https://*/": {
+      "warning_text": "Read and modify all your data on all websites you visit",
+      "notes": ""
+    },
+    "management": {
+      "warning_text": "Manage your apps, extensions, and themes",
+      "notes": "The <code>management</code> permission is required by the <code>chrome.management</code> module."
+    },
+    "mdns": {
+      "warning_text": "Discover devices on your local network",
+      "notes": "The <code>mdns</code> permission is required by the <code>chrome.mdns</code> module."
+    },
+    "geolocation": {
+      "warning_text": "Detect your physical location",
+      "notes": "Allows the extension to use the proposed HTML5 geolocation API without prompting the user for permission."
+    },
+    "clipboardRead": {
+      "warning_text": "Access data you copy and paste",
+      "notes": "Allows the extension to use the following editing commands with <code>document.execCommand()</code>: <code>copy</code>, <code>cut</code>"
+    },
+    "privacy": {
+      "warning_text": "Manipulate privacy-related settings",
+      "notes": "The <code>privacy</code> permission is required by the <code>chrome.privacy</code> module."
+    },
+    "signedInDevices": {
+      "warning_text": "Access the list of your signed-in devices",
+      "notes": "The <code>signedInDevices</code> permission is required by the <code>chrome.signedInDevices</code> module."
+    },
+    "ttsEngine": {
+      "warning_text": "Access all text spoken using synthesized speech",
+      "notes": "The <code>ttsEngine</code> permission is required by the <code>chrome.ttsEngine</code> module."
+    }
+  }
 }
